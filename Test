@@ -1965,39 +1965,38 @@ end)
 local currentLang = "EN"
 local function UpdateLanguage()
     if currentLang == "TR" then
-        -- Eski dil ayarların duracak, altlarına bunları ekle:
+        WelcomeTitle.Text = "MM2'yi Bu Yazılımımız İle Domine Et."
+        Tabs["Ana Menü"].Button.Text = "Ana Menü"
+        Tabs["Farm"].Button.Text = "Farm"
+        Tabs["Oyuncu"].Button.Text = "Oyuncu"
+        Tabs["Savaş"].Button.Text = "Savaş"
+        Tabs["Görsel"].Button.Text = "Görsel"
+        Tabs["Işınlanma"].Button.Text = "Işınlanma"
+        Tabs["Groq AI"].Button.Text = "Asistan AI"
+        Tabs["Ayarlar"].Button.Text = "Ayarlar"
+        
+        -- AI Dil Ayarları
         if AIInputBox then AIInputBox.PlaceholderText = "Asistana komutunuzu yazın..." end
         if AISendBtn then AISendBtn.Text = "GÖNDER" end
         if ModeToggleBtn then ModeToggleBtn.Text = (aiMode == "Chat") and "Sohbet Modu" or "Kod Modu" end
         if ModeDesc then ModeDesc.Text = (aiMode == "Chat") and "Asistan sizinle sadece sohbet eder." or "Asistan menüye dinamik özellik ekler." end
     else
-        -- Eski dil ayarların duracak, altlarına bunları ekle:
+        WelcomeTitle.Text = "Dominate MM2 With Our Soft-Ware"
+        Tabs["Ana Menü"].Button.Text = "Home"
+        Tabs["Farm"].Button.Text = "Farm"
+        Tabs["Oyuncu"].Button.Text = "Player"
+        Tabs["Savaş"].Button.Text = "Combat"
+        Tabs["Görsel"].Button.Text = "Visual"
+        Tabs["Işınlanma"].Button.Text = "Teleport"
+        Tabs["Groq AI"].Button.Text = "Assistant AI"
+        Tabs["Ayarlar"].Button.Text = "Settings"
+        
+        -- AI Dil Ayarları
         if AIInputBox then AIInputBox.PlaceholderText = "Type your command to the assistant..." end
         if AISendBtn then AISendBtn.Text = "SEND" end
         if ModeToggleBtn then ModeToggleBtn.Text = (aiMode == "Chat") and "Chat Mode" or "Code Mode" end
         if ModeDesc then ModeDesc.Text = (aiMode == "Chat") and "Assistant only chats with you." or "Assistant adds dynamic features to menu." end
     end
-end
-WelcomeTitle.Text = "MM2'yi Bu Yazılımımız İle Domine Et."
-Tabs["Ana Menü"].Button.Text = "Ana Menü"
-Tabs["Farm"].Button.Text = "Farm"
-Tabs["Oyuncu"].Button.Text = "Oyuncu"
-Tabs["Savaş"].Button.Text = "Savaş"
-Tabs["Görsel"].Button.Text = "Görsel"
-Tabs["Işınlanma"].Button.Text = "Işınlanma"
-Tabs["Groq AI"].Button.Text = "Asistan AI"
-Tabs["Ayarlar"].Button.Text = "Ayarlar"
-else
-WelcomeTitle.Text = "Dominate MM2 With Our Soft-Ware"
-Tabs["Ana Menü"].Button.Text = "Home"
-Tabs["Farm"].Button.Text = "Farm"
-Tabs["Oyuncu"].Button.Text = "Player"
-Tabs["Savaş"].Button.Text = "Combat"
-Tabs["Görsel"].Button.Text = "Visual"
-Tabs["Işınlanma"].Button.Text = "Teleport"
-Tabs["Groq AI"].Button.Text = "Assistant AI"
-Tabs["Ayarlar"].Button.Text = "Settings"
-end
 end
 UpdateLanguage()
 
@@ -2034,22 +2033,22 @@ Instance.new("UICorner", TrBtn).CornerRadius = UDim.new(0, 6)
 TrBtn.Parent = LangFrame
 
 local function ChangeLang(lang)
-if currentLang == lang then return end
-currentLang = lang
+    if currentLang == lang then return end
+    currentLang = lang
 
--- Buton renklerini anında güncelle
-EnBtn.BackgroundColor3 = (currentLang == "EN") and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(45, 45, 50)
-TrBtn.BackgroundColor3 = (currentLang == "TR") and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(45, 45, 50)
+    -- Buton renklerini anında güncelle
+    EnBtn.BackgroundColor3 = (currentLang == "EN") and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(45, 45, 50)
+    TrBtn.BackgroundColor3 = (currentLang == "TR") and Color3.fromRGB(138, 43, 226) or Color3.fromRGB(45, 45, 50)
 
--- Menüyü kapat-aç efekti
-TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)}):Play()
-task.wait(0.4)
-MainFrame.Visible = false
-UpdateLanguage() 
-task.wait(0.2)
-MainFrame.Visible = true
-TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 800, 0, 520)}):Play()
-Notify("Language updated to " .. currentLang)
+    -- Menüyü kapat-aç efekti
+    TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+    task.wait(0.4)
+    MainFrame.Visible = false
+    UpdateLanguage() 
+    task.wait(0.2)
+    MainFrame.Visible = true
+    TweenService:Create(MainFrame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Size = UDim2.new(0, 800, 0, 520)}):Play()
+    Notify("Language updated to " .. currentLang)
 end
 
 EnBtn.MouseButton1Click:Connect(function() ChangeLang("EN") end)
