@@ -2096,7 +2096,7 @@ local colorNames = {"YEŞİL", "KIRMIZI", "SARI", "BEYAZ"}
 local cIndex = 1
 CrossColor = colors[cIndex] -- Global atama
 
-CreateButton(SettingsCard, "Crosshair Rengi", "Aimbot nişangahının rengini değiştirir.", 0, "YEŞİL", function(btnTxt)
+CreateButton(SettingsCard, "Crosshair Rengi", "Aimbot nişangahının rengini değiştirir.", "YEŞİL", function(btnTxt)
     cIndex = cIndex + 1
     if cIndex > #colors then cIndex = 1 end
 
