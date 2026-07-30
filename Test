@@ -927,91 +927,6 @@ local function CreateButton(parentContainer, name, description, minTier, default
         pcall(function() callback(ActionTxt) end)
     end)
 end
-    local RowFrame = Instance.new("Frame")
-    RowFrame.Size = UDim2.new(1, -5, 0, 45)
-    RowFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-    RowFrame.ZIndex = 4
-    RowFrame.Parent = parentContainer
-    Instance.new("UICorner", RowFrame).CornerRadius = UDim.new(0, 6)
-
-    local ClickArea = Instance.new("TextButton")
-    ClickArea.Size = UDim2.new(1, 0, 1, 0)
-    ClickArea.BackgroundTransparency = 1
-    ClickArea.Text = ""
-    ClickArea.ZIndex = 15 
-    ClickArea.Parent = RowFrame
-
-    local TierLbl = Instance.new("TextLabel")
-    TierLbl.Size = UDim2.new(0, 45, 0, 15)
-    TierLbl.Position = UDim2.new(0, 5, 0, 5)
-    TierLbl.BackgroundColor3 = (minTier == 2 and Color3.fromRGB(138, 43, 226)) or (minTier == 1 and Color3.fromRGB(50, 150, 255)) or Color3.fromRGB(100, 100, 100)
-    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "ADVANCED") or "FREE"
-    TierLbl.Font = Enum.Font.GothamBold
-    TierLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TierLbl.TextSize = 8
-    TierLbl.ZIndex = 5
-    Instance.new("UICorner", TierLbl).CornerRadius = UDim.new(0, 4)
-    TierLbl.Parent = RowFrame
-
-    local TitleLbl = Instance.new("TextLabel")
-    TitleLbl.Name = "TitleLbl"
-    TitleLbl.Size = UDim2.new(1, -100, 0, 20)
-    TitleLbl.Position = UDim2.new(0, 55, 0, 3)
-    TitleLbl.BackgroundTransparency = 1
-    TitleLbl.Text = name
-    TitleLbl.Font = Enum.Font.GothamBold
-    TitleLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TitleLbl.TextSize = 12
-    TitleLbl.TextXAlignment = Enum.TextXAlignment.Left
-    TitleLbl.ZIndex = 5
-    TitleLbl.Parent = RowFrame
-
-    local DescLbl = Instance.new("TextLabel")
-    DescLbl.Name = "DescLbl"
-    DescLbl.Size = UDim2.new(1, -90, 0, 20)
-    DescLbl.Position = UDim2.new(0, 10, 0, 22)
-    DescLbl.BackgroundTransparency = 1
-    DescLbl.Text = description
-    DescLbl.Font = Enum.Font.Gotham
-    DescLbl.TextColor3 = Color3.fromRGB(150, 150, 150)
-    DescLbl.TextSize = 10
-    DescLbl.TextXAlignment = Enum.TextXAlignment.Left
-    DescLbl.ZIndex = 5
-    DescLbl.Parent = RowFrame
-
-    local ActionBtnFrame = Instance.new("Frame")
-    ActionBtnFrame.Size = UDim2.new(0, 65, 0, 20)
-    ActionBtnFrame.Position = UDim2.new(1, -75, 0.5, -10)
-    ActionBtnFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
-    ActionBtnFrame.ZIndex = 5
-    Instance.new("UICorner", ActionBtnFrame).CornerRadius = UDim.new(0, 6)
-    ActionBtnFrame.Parent = RowFrame
-
-    local ActionStroke = Instance.new("UIStroke")
-    ActionStroke.Color = Color3.fromRGB(138, 43, 226)
-    ActionStroke.Thickness = 1
-    ActionStroke.Parent = ActionBtnFrame
-
-    local ActionTxt = Instance.new("TextLabel")
-    ActionTxt.Size = UDim2.new(1, 0, 1, 0)
-    ActionTxt.BackgroundTransparency = 1
-    ActionTxt.Text = defaultText
-    ActionTxt.Font = Enum.Font.GothamBold
-    ActionTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
-    ActionTxt.TextSize = 10
-    ActionTxt.ZIndex = 6
-    ActionTxt.Parent = ActionBtnFrame
-
-    ClickArea.MouseButton1Click:Connect(function()
-        if UserTierValue < 0 then Notify("Önce Key giriniz!"); return end
-        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "ADVANCED" or "PRO") .. " gerektirir!"); return end
-
-        TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(138, 43, 226)}):Play()
-        task.wait(0.1)
-        TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(45, 45, 50)}):Play()
-        pcall(function() callback(ActionTxt) end)
-    end)
-end
 -- ==========================================
 -- ÖZELLİKLER VE SEKMELER
 -- ==========================================
@@ -2036,23 +1951,23 @@ local SettingsCard = CreateCategoryCard(SettingsTab, "Arayüz Ayarları (GUI)")
 
 -- 1. ARAYÜZ BOYUTU
 local currentSizeState = 3
-CreateButton(SettingsCard, "Arayüz Boyutu", "Menünün boyutunu ayarlar.", "NORMAL", function(btnTxt)
-currentSizeState = currentSizeState + 1
-if currentSizeState > 3 then currentSizeState = 1 end
+CreateButton(SettingsCard, "Arayüz Boyutu", "Menünün boyutunu ayarlar.", 0, "NORMAL", function(btnTxt)
+    currentSizeState = currentSizeState + 1
+    if currentSizeState > 3 then currentSizeState = 1 end
 
-local targetSize = UDim2.new(0, 800, 0, 520)
-local stateName = "NORMAL"
+    local targetSize = UDim2.new(0, 800, 0, 520)
+    local stateName = "NORMAL"
 
-if currentSizeState == 1 then
-targetSize = UDim2.new(0, 480, 0, 350)
-stateName = "KÜÇÜK"
-elseif currentSizeState == 2 then
-targetSize = UDim2.new(0, 620, 0, 420)
-stateName = "ORTA"
-end
+    if currentSizeState == 1 then
+        targetSize = UDim2.new(0, 480, 0, 350)
+        stateName = "KÜÇÜK"
+    elseif currentSizeState == 2 then
+        targetSize = UDim2.new(0, 620, 0, 420)
+        stateName = "ORTA"
+    end
 
-btnTxt.Text = stateName
-TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = targetSize}):Play()
+    btnTxt.Text = stateName
+    TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = targetSize}):Play()
 end)
 -- 2. DİL DEĞİŞTİRME (LANGUAGE)
 local currentLang = "EN"
@@ -2181,13 +2096,13 @@ local colorNames = {"YEŞİL", "KIRMIZI", "SARI", "BEYAZ"}
 local cIndex = 1
 CrossColor = colors[cIndex] -- Global atama
 
-CreateButton(SettingsCard, "Crosshair Rengi", "Aimbot nişangahının rengini değiştirir.", "YEŞİL", function(btnTxt)
-cIndex = cIndex + 1
-if cIndex > #colors then cIndex = 1 end
+CreateButton(SettingsCard, "Crosshair Rengi", "Aimbot nişangahının rengini değiştirir.", 0, "YEŞİL", function(btnTxt)
+    cIndex = cIndex + 1
+    if cIndex > #colors then cIndex = 1 end
 
-CrossColor = colors[cIndex]
-btnTxt.Text = colorNames[cIndex]
-btnTxt.TextColor3 = colors[cIndex]
+    CrossColor = colors[cIndex]
+    btnTxt.Text = colorNames[cIndex]
+    btnTxt.TextColor3 = colors[cIndex]
 end)
 -- ==========================================
 -- YENİ INTRO VE KEY SİSTEMİ
