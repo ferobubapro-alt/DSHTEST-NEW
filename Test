@@ -188,7 +188,8 @@ end)
 -- KEY & YETKİLENDİRME SİSTEMİ
 -- ==========================================
 local UserTierValue = -1 
-local TierNames = {[-1] = "Giriş Bekleniyor", [0] = "FREE", [1] = "ADVANCED", [2] = "PRO"}
+local TierNames = {[-1] = "Giriş Bekleniyor", [0] = "FREE", [1] = "LITE", [2] = "PRO"}
+-- ==========================================
 -- ==========================================
 -- ANA ARAYÜZ
 -- ==========================================
@@ -242,6 +243,29 @@ SafeText.TextSize = 12
 SafeText.TextXAlignment = Enum.TextXAlignment.Right
 SafeText.ZIndex = 6
 SafeText.Parent = TopBar
+local animPhrases = {
+    {"Safe,", "Fast,", "Undetected."},
+    {"Optimized,", "Privileged,", "Humanized."},
+    {"Zero", "Detection,", "Bypass."},
+    {"24/7", "Support."}
+}
+
+task.spawn(function()
+    local phraseIndex = 1
+    while true do
+        local currentWords = animPhrases[phraseIndex]
+        local buildString = ""
+        SafeText.Text = ""
+        for i, word in ipairs(currentWords) do
+            buildString = buildString .. (i == 1 and "" or " ") .. word
+            SafeText.Text = buildString
+            task.wait(0.3) -- Kelime kelime yazma hızı
+        end
+        task.wait(3) -- Yazı bittikten sonra 3 saniye bekle
+        phraseIndex = phraseIndex + 1
+        if phraseIndex > #animPhrases then phraseIndex = 1 end
+    end
+end)
 
 local CloseBtn = Instance.new("TextButton")
 CloseBtn.Size = UDim2.new(0, 30, 0, 30)
@@ -758,7 +782,7 @@ local function CreateToggle(parentContainer, name, description, minTier, callbac
     TierLbl.Size = UDim2.new(0, 45, 0, 15)
     TierLbl.Position = UDim2.new(0, 5, 0, 5)
     TierLbl.BackgroundColor3 = (minTier == 2 and Color3.fromRGB(138, 43, 226)) or (minTier == 1 and Color3.fromRGB(50, 150, 255)) or Color3.fromRGB(100, 100, 100)
-    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "ADVANCED") or "FREE"
+    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "LITE") or "FREE"
     TierLbl.Font = Enum.Font.GothamBold
     TierLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
     TierLbl.TextSize = 8
@@ -814,7 +838,7 @@ local function CreateToggle(parentContainer, name, description, minTier, callbac
 
     local function FireToggle()
         if UserTierValue < 0 then Notify("Önce Key giriniz!"); return end
-        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "ADVANCED" or "PRO") .. " yetkisi gerektirir!"); return end
+        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "LITE" or "PRO") .. " yetkisi gerektirir!"); return end
 
         toggled = not toggled
         if toggled then
@@ -860,7 +884,7 @@ local function CreateButton(parentContainer, name, description, minTier, default
     TierLbl.Size = UDim2.new(0, 45, 0, 15)
     TierLbl.Position = UDim2.new(0, 5, 0, 5)
     TierLbl.BackgroundColor3 = (minTier == 2 and Color3.fromRGB(138, 43, 226)) or (minTier == 1 and Color3.fromRGB(50, 150, 255)) or Color3.fromRGB(100, 100, 100)
-    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "ADVANCED") or "FREE"
+    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "LITE") or "FREE"
     TierLbl.Font = Enum.Font.GothamBold
     TierLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
     TierLbl.TextSize = 8
@@ -919,7 +943,7 @@ local function CreateButton(parentContainer, name, description, minTier, default
 
     ClickArea.MouseButton1Click:Connect(function()
         if UserTierValue < 0 then Notify("Önce Key giriniz!"); return end
-        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "ADVANCED" or "PRO") .. " gerektirir!"); return end
+        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "LITE" or "PRO") .. " gerektirir!"); return end
 
         TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(138, 43, 226)}):Play()
         task.wait(0.1)
@@ -952,7 +976,18 @@ if char and char:FindFirstChild("HumanoidRootPart") and char:FindFirstChild("Hum
 local hrp = char.HumanoidRootPart
 local targetCoin = nil
 
+local targetCoin = nil
+local shortestDistance = math.huge
+
 for _, v in pairs(Workspace:GetDescendants()) do
+    if v.Name == "Coin_Server" and v:IsA("BasePart") then
+        local distance = (hrp.Position - v.Position).Magnitude
+        if distance < shortestDistance then
+            shortestDistance = distance
+            targetCoin = v
+        end
+    end
+end
 if v.Name == "Coin_Server" and v:IsA("BasePart") then
 targetCoin = v
 break
@@ -1640,50 +1675,78 @@ Toggles.SheriffESP = state
 UpdateESP()
 end)
 -- === IŞINLANMA (TELEPORT) SEKMESİ ===
--- === IŞINLANMA (TELEPORT) SEKMESİ ===
 local TeleportCard = CreateCategoryCard(TeleportTab, "Hızlı Işınlanma")
 
+-- Dinamik Harita Takip Sistemi
+local dynamicMapPos = nil
+task.spawn(function()
+    while task.wait(1) do
+        local inGameCount = 0
+        local potentialMapPos = nil
+        for _, p in pairs(Players:GetPlayers()) do
+            if p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                local pos = p.Character.HumanoidRootPart.Position
+                -- Eğer oyuncu lobi merkezinden 150 stud uzaktaysa haritadadır
+                if (pos - Vector3.new(-109, 134, 11)).Magnitude > 150 then
+                    inGameCount = inGameCount + 1
+                    potentialMapPos = p.Character.HumanoidRootPart.CFrame
+                end
+            end
+        end
+        if inGameCount >= 2 and potentialMapPos then
+            dynamicMapPos = potentialMapPos -- Harita konumunu kaydet
+        elseif inGameCount == 0 then
+            dynamicMapPos = nil -- Herkes ölünce/lobiye dönünce haritayı sıfırla
+        end
+    end
+end)
+
 CreateButton(TeleportCard, "Lobiye Işınlan", "Bekleme salonuna (Lobby) geri dönersin.", 0, "GİT", function()
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-109, 138, 11)
-Notify("Lobiye ışınlandın.")
-end
+    if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        -- MM2 Lobi Spawns Klasörünü kontrol et, yoksa manuel düzgün yükseklik
+        local lobbySpawns = Workspace:FindFirstChild("Lobby") and Workspace.Lobby:FindFirstChild("Spawns")
+        if lobbySpawns and #lobbySpawns:GetChildren() > 0 then
+            local randomSpawn = lobbySpawns:GetChildren()[math.random(1, #lobbySpawns:GetChildren())]
+            LocalPlayer.Character.HumanoidRootPart.CFrame = randomSpawn.CFrame + Vector3.new(0, 3, 0)
+        else
+            LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-109, 134, 11) -- Lobi için daha düşük, doğru yükseklik
+        end
+        Notify("Lobiye ışınlandın.")
+    end
 end)
 
 CreateButton(TeleportCard, "Haritaya Işınlan", "Oynanan haritanın ortasına gidersin.", 0, "GİT", function()
-local mapSpawns = Workspace:FindFirstChild("Spawns") or Workspace:FindFirstChild("NormalSpawns")
-if mapSpawns and #mapSpawns:GetChildren() > 0 and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = mapSpawns:GetChildren()[1].CFrame + Vector3.new(0, 5, 0)
-Notify("Haritaya ışınlandın.")
-else
-Notify("Oyun şu an başlamamış!")
-end
+    if dynamicMapPos and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = dynamicMapPos + Vector3.new(0, 5, 0)
+        Notify("Haritaya ışınlandın.")
+    else
+        Notify("Oyun şu an başlamamış veya harita bulunamadı!")
+    end
 end)
 
 CreateButton(TeleportCard, "Katile Işınlan", "Katilin tam arkasına ışınlanırsın.", 0, "GİT", function()
-for _, plr in pairs(Players:GetPlayers()) do
-if plr ~= LocalPlayer and GetRole(plr) == "Murderer" and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 4)
-Notify("Katile ışınlandın!") return
-end
-end
-end
-Notify("Katil bulunamadı.")
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and GetRole(plr) == "Murderer" and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+            if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 4)
+                Notify("Katile ışınlandın!") return
+            end
+        end
+    end
+    Notify("Katil bulunamadı.")
 end)
 
 CreateButton(TeleportCard, "Şerife Işınlan", "Şerifin tam arkasına ışınlanırsın.", 0, "GİT", function()
-for _, plr in pairs(Players:GetPlayers()) do
-if plr ~= LocalPlayer and GetRole(plr) == "Sheriff" and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
-if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 4)
-Notify("Şerife ışınlandın!") return
-end
-end
-end
-Notify("Şerif bulunamadı.")
+    for _, plr in pairs(Players:GetPlayers()) do
+        if plr ~= LocalPlayer and GetRole(plr) == "Sheriff" and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
+            if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                LocalPlayer.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 4)
+                Notify("Şerife ışınlandın!") return
+            end
+        end
+    end
+    Notify("Şerif bulunamadı.")
 end)
-
 -- === AYARLAR SEKMESİ ===
 local SettingsCard = CreateCategoryCard(SettingsTab, "Arayüz Ayarları (GUI)")
 
@@ -2208,7 +2271,7 @@ if k == "Free_4202" then
 UserTierValue = 0; tierName = "Free"
 TierBadge.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
 elseif k:match("^%a%a%a%a%a%a%d%d%d$") then
-UserTierValue = 1; tierName = "Premium-Lite"
+UserTierValue = 1; tierName = "Lite"
 TierBadge.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
 elseif k:match("^%a%a%a%a%a%a%a%a%a%a%a%a%d%d%d%d$") then
 UserTierValue = 2; tierName = "Premium"
