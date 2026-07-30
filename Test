@@ -188,8 +188,7 @@ end)
 -- KEY & YETKİLENDİRME SİSTEMİ
 -- ==========================================
 local UserTierValue = -1 
-local TierNames = {[-1] = "Giriş Bekleniyor", [0] = "Free", [1] = "Premium-Lite", [2] = "Premium"}
-
+local TierNames = {[-1] = "Giriş Bekleniyor", [0] = "FREE", [1] = "ADVANCED", [2] = "PRO"}
 -- ==========================================
 -- ANA ARAYÜZ
 -- ==========================================
@@ -741,192 +740,192 @@ end
 end
 
 local function CreateToggle(parentContainer, name, description, minTier, callback)
-local RowFrame = Instance.new("Frame")
-RowFrame.Size = UDim2.new(1, -5, 0, 45)
-RowFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-RowFrame.ZIndex = 4
-RowFrame.Parent = parentContainer
-Instance.new("UICorner", RowFrame).CornerRadius = UDim.new(0, 6)
+    local RowFrame = Instance.new("Frame")
+    RowFrame.Size = UDim2.new(1, -5, 0, 45)
+    RowFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    RowFrame.ZIndex = 4
+    RowFrame.Parent = parentContainer
+    Instance.new("UICorner", RowFrame).CornerRadius = UDim.new(0, 6)
 
-local ClickArea = Instance.new("TextButton")
-ClickArea.Size = UDim2.new(1, 0, 1, 0)
-ClickArea.BackgroundTransparency = 1
-ClickArea.Text = ""
-ClickArea.ZIndex = 10 
-ClickArea.Parent = RowFrame
+    local ClickArea = Instance.new("TextButton")
+    ClickArea.Size = UDim2.new(1, 0, 1, 0)
+    ClickArea.BackgroundTransparency = 1
+    ClickArea.Text = ""
+    ClickArea.ZIndex = 15 -- Tıklama sorununu engeller
+    ClickArea.Parent = RowFrame
 
-local TierLbl = Instance.new("TextLabel")
-TierLbl.Size = UDim2.new(0, 30, 0, 15)
-TierLbl.Position = UDim2.new(0, 5, 0, 5)
-TierLbl.BackgroundColor3 = (minTier == 2 and Color3.fromRGB(138, 43, 226)) or (minTier == 1 and Color3.fromRGB(50, 150, 255)) or Color3.fromRGB(100, 100, 100)
-TierLbl.Text = (minTier == 2 and "PREMIUM") or (minTier == 1 and "LITE") or "FREE"
-TierLbl.Font = Enum.Font.GothamBold
-TierLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-TierLbl.TextSize = 8
-TierLbl.ZIndex = 5
-Instance.new("UICorner", TierLbl).CornerRadius = UDim.new(0, 4)
-TierLbl.Parent = RowFrame
+    local TierLbl = Instance.new("TextLabel")
+    TierLbl.Size = UDim2.new(0, 45, 0, 15)
+    TierLbl.Position = UDim2.new(0, 5, 0, 5)
+    TierLbl.BackgroundColor3 = (minTier == 2 and Color3.fromRGB(138, 43, 226)) or (minTier == 1 and Color3.fromRGB(50, 150, 255)) or Color3.fromRGB(100, 100, 100)
+    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "ADVANCED") or "FREE"
+    TierLbl.Font = Enum.Font.GothamBold
+    TierLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TierLbl.TextSize = 8
+    TierLbl.ZIndex = 5
+    Instance.new("UICorner", TierLbl).CornerRadius = UDim.new(0, 4)
+    TierLbl.Parent = RowFrame
 
-local TitleLbl = Instance.new("TextLabel")
-TitleLbl.Size = UDim2.new(1, -85, 0, 20)
-TitleLbl.Position = UDim2.new(0, 40, 0, 3)
-TitleLbl.BackgroundTransparency = 1
-TitleLbl.Text = name
-TitleLbl.Font = Enum.Font.GothamBold
-TitleLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLbl.TextSize = 12
-TitleLbl.TextWrapped = true
-TitleLbl.TextXAlignment = Enum.TextXAlignment.Left
-TitleLbl.ZIndex = 5
-TitleLbl.Parent = RowFrame
+    local TitleLbl = Instance.new("TextLabel")
+    TitleLbl.Name = "TitleLbl"
+    TitleLbl.Size = UDim2.new(1, -100, 0, 20)
+    TitleLbl.Position = UDim2.new(0, 55, 0, 3)
+    TitleLbl.BackgroundTransparency = 1
+    TitleLbl.Text = name
+    TitleLbl.Font = Enum.Font.GothamBold
+    TitleLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLbl.TextSize = 12
+    TitleLbl.TextWrapped = true
+    TitleLbl.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLbl.ZIndex = 5
+    TitleLbl.Parent = RowFrame
 
-local DescLbl = Instance.new("TextLabel")
-DescLbl.Size = UDim2.new(1, -55, 0, 20)
-DescLbl.Position = UDim2.new(0, 10, 0, 22)
-DescLbl.BackgroundTransparency = 1
-DescLbl.Text = description
-DescLbl.Font = Enum.Font.Gotham
-DescLbl.TextColor3 = Color3.fromRGB(150, 150, 150)
-DescLbl.TextSize = 10
-DescLbl.TextWrapped = true
-DescLbl.TextXAlignment = Enum.TextXAlignment.Left
-DescLbl.ZIndex = 5
-DescLbl.Parent = RowFrame
+    local DescLbl = Instance.new("TextLabel")
+    DescLbl.Name = "DescLbl"
+    DescLbl.Size = UDim2.new(1, -55, 0, 20)
+    DescLbl.Position = UDim2.new(0, 10, 0, 22)
+    DescLbl.BackgroundTransparency = 1
+    DescLbl.Text = description
+    DescLbl.Font = Enum.Font.Gotham
+    DescLbl.TextColor3 = Color3.fromRGB(150, 150, 150)
+    DescLbl.TextSize = 10
+    DescLbl.TextWrapped = true
+    DescLbl.TextXAlignment = Enum.TextXAlignment.Left
+    DescLbl.ZIndex = 5
+    DescLbl.Parent = RowFrame
 
-local ToggleBtn = Instance.new("Frame")
-ToggleBtn.Size = UDim2.new(0, 36, 0, 18)
-ToggleBtn.Position = UDim2.new(1, -45, 0.5, -9)
-ToggleBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
-ToggleBtn.ZIndex = 5
-Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1, 0)
-ToggleBtn.Parent = RowFrame
+    local ToggleBtn = Instance.new("Frame")
+    ToggleBtn.Size = UDim2.new(0, 36, 0, 18)
+    ToggleBtn.Position = UDim2.new(1, -45, 0.5, -9)
+    ToggleBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+    ToggleBtn.ZIndex = 5
+    Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(1, 0)
+    ToggleBtn.Parent = RowFrame
 
-local Circle = Instance.new("Frame")
-Circle.Size = UDim2.new(0, 14, 0, 14)
-Circle.Position = UDim2.new(0, 2, 0, 2)
-Circle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
-Circle.ZIndex = 6
-Instance.new("UICorner", Circle).CornerRadius = UDim.new(1, 0)
-Circle.Parent = ToggleBtn
+    local Circle = Instance.new("Frame")
+    Circle.Size = UDim2.new(0, 14, 0, 14)
+    Circle.Position = UDim2.new(0, 2, 0, 2)
+    Circle.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+    Circle.ZIndex = 6
+    Instance.new("UICorner", Circle).CornerRadius = UDim.new(1, 0)
+    Circle.Parent = ToggleBtn
 
-local toggled = false
+    local toggled = false
 
-local function FireToggle()
-if UserTierValue < 0 then
-Notify("Önce Ana Menüden Key giriniz!")
-return
-end
-if UserTierValue < minTier then
-Notify("Bu özellik " .. (minTier == 1 and "Premium-Lite" or "Premium") .. " gerektirir!")
-return
-end
+    local function FireToggle()
+        if UserTierValue < 0 then Notify("Önce Key giriniz!"); return end
+        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "ADVANCED" or "PRO") .. " yetkisi gerektirir!"); return end
 
-toggled = not toggled
-if toggled then
-TweenService:Create(ToggleBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(138, 43, 226)}):Play()
-TweenService:Create(Circle, TweenInfo.new(0.2), {Position = UDim2.new(1, -16, 0, 2), BackgroundColor3 = Color3.fromRGB(255,255,255)}):Play()
-else
-TweenService:Create(ToggleBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(45, 45, 50)}):Play()
-TweenService:Create(Circle, TweenInfo.new(0.2), {Position = UDim2.new(0, 2, 0, 2), BackgroundColor3 = Color3.fromRGB(200,200,200)}):Play()
-end
-Notify(name .. (toggled and " Aktif" or " Kapalı"))
-pcall(function() callback(toggled) end)
-end
+        toggled = not toggled
+        if toggled then
+            TweenService:Create(ToggleBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(138, 43, 226)}):Play()
+            TweenService:Create(Circle, TweenInfo.new(0.2), {Position = UDim2.new(1, -16, 0, 2), BackgroundColor3 = Color3.fromRGB(255,255,255)}):Play()
+        else
+            TweenService:Create(ToggleBtn, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(45, 45, 50)}):Play()
+            TweenService:Create(Circle, TweenInfo.new(0.2), {Position = UDim2.new(0, 2, 0, 2), BackgroundColor3 = Color3.fromRGB(200,200,200)}):Play()
+        end
+        pcall(function() callback(toggled) end)
+    end
 
-local isPressed = false
-local longPressFired = false
-
-ClickArea.MouseButton1Down:Connect(function()
-isPressed = true; longPressFired = false
-task.delay(0.5, function()
-if isPressed and not longPressFired then
-longPressFired = true
-if FloatingWidgets[name] then
-RemoveQuickWidget(name)
-else
-CreateQuickWidget(name, FireToggle)
-Notify(name .. " Hızlı Buton Eklendi!")
-end
-end
-end)
-end)
-
-ClickArea.MouseButton1Up:Connect(function()
-isPressed = false
-if not longPressFired then FireToggle() end
-end)
-
-ClickArea.MouseLeave:Connect(function() isPressed = false end)
+    local isPressed = false; local longPressFired = false
+    ClickArea.MouseButton1Down:Connect(function()
+        isPressed = true; longPressFired = false
+        task.delay(0.5, function()
+            if isPressed and not longPressFired then
+                longPressFired = true
+                if FloatingWidgets[name] then RemoveQuickWidget(name) else CreateQuickWidget(name, FireToggle); Notify(name .. " Hızlı Buton Eklendi!") end
+            end
+        end)
+    end)
+    ClickArea.MouseButton1Up:Connect(function() isPressed = false; if not longPressFired then FireToggle() end end)
+    ClickArea.MouseLeave:Connect(function() isPressed = false end)
 end
 
-local function CreateButton(parentContainer, name, description, defaultText, callback)
-local RowFrame = Instance.new("Frame")
-RowFrame.Size = UDim2.new(1, -5, 0, 45)
-RowFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
-RowFrame.ZIndex = 4
-RowFrame.Parent = parentContainer
-Instance.new("UICorner", RowFrame).CornerRadius = UDim.new(0, 6)
+local function CreateButton(parentContainer, name, description, minTier, defaultText, callback)
+    local RowFrame = Instance.new("Frame")
+    RowFrame.Size = UDim2.new(1, -5, 0, 45)
+    RowFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+    RowFrame.ZIndex = 4
+    RowFrame.Parent = parentContainer
+    Instance.new("UICorner", RowFrame).CornerRadius = UDim.new(0, 6)
 
-local ClickArea = Instance.new("TextButton")
-ClickArea.Size = UDim2.new(1, 0, 1, 0)
-ClickArea.BackgroundTransparency = 1
-ClickArea.Text = ""
-ClickArea.ZIndex = 10 
-ClickArea.Parent = RowFrame
+    local ClickArea = Instance.new("TextButton")
+    ClickArea.Size = UDim2.new(1, 0, 1, 0)
+    ClickArea.BackgroundTransparency = 1
+    ClickArea.Text = ""
+    ClickArea.ZIndex = 15 
+    ClickArea.Parent = RowFrame
 
-local TitleLbl = Instance.new("TextLabel")
-TitleLbl.Size = UDim2.new(1, -90, 0, 20)
-TitleLbl.Position = UDim2.new(0, 10, 0, 3)
-TitleLbl.BackgroundTransparency = 1
-TitleLbl.Text = name
-TitleLbl.Font = Enum.Font.GothamBold
-TitleLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLbl.TextSize = 12
-TitleLbl.TextXAlignment = Enum.TextXAlignment.Left
-TitleLbl.ZIndex = 5
-TitleLbl.Parent = RowFrame
+    local TierLbl = Instance.new("TextLabel")
+    TierLbl.Size = UDim2.new(0, 45, 0, 15)
+    TierLbl.Position = UDim2.new(0, 5, 0, 5)
+    TierLbl.BackgroundColor3 = (minTier == 2 and Color3.fromRGB(138, 43, 226)) or (minTier == 1 and Color3.fromRGB(50, 150, 255)) or Color3.fromRGB(100, 100, 100)
+    TierLbl.Text = (minTier == 2 and "PRO") or (minTier == 1 and "ADVANCED") or "FREE"
+    TierLbl.Font = Enum.Font.GothamBold
+    TierLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TierLbl.TextSize = 8
+    TierLbl.ZIndex = 5
+    Instance.new("UICorner", TierLbl).CornerRadius = UDim.new(0, 4)
+    TierLbl.Parent = RowFrame
 
-local DescLbl = Instance.new("TextLabel")
-DescLbl.Size = UDim2.new(1, -90, 0, 20)
-DescLbl.Position = UDim2.new(0, 10, 0, 22)
-DescLbl.BackgroundTransparency = 1
-DescLbl.Text = description
-DescLbl.Font = Enum.Font.Gotham
-DescLbl.TextColor3 = Color3.fromRGB(150, 150, 150)
-DescLbl.TextSize = 10
-DescLbl.TextXAlignment = Enum.TextXAlignment.Left
-DescLbl.ZIndex = 5
-DescLbl.Parent = RowFrame
+    local TitleLbl = Instance.new("TextLabel")
+    TitleLbl.Name = "TitleLbl"
+    TitleLbl.Size = UDim2.new(1, -100, 0, 20)
+    TitleLbl.Position = UDim2.new(0, 55, 0, 3)
+    TitleLbl.BackgroundTransparency = 1
+    TitleLbl.Text = name
+    TitleLbl.Font = Enum.Font.GothamBold
+    TitleLbl.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TitleLbl.TextSize = 12
+    TitleLbl.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLbl.ZIndex = 5
+    TitleLbl.Parent = RowFrame
 
-local ActionBtnFrame = Instance.new("Frame")
-ActionBtnFrame.Size = UDim2.new(0, 65, 0, 20)
-ActionBtnFrame.Position = UDim2.new(1, -75, 0.5, -10)
-ActionBtnFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
-ActionBtnFrame.ZIndex = 5
-Instance.new("UICorner", ActionBtnFrame).CornerRadius = UDim.new(0, 6)
-ActionBtnFrame.Parent = RowFrame
+    local DescLbl = Instance.new("TextLabel")
+    DescLbl.Name = "DescLbl"
+    DescLbl.Size = UDim2.new(1, -90, 0, 20)
+    DescLbl.Position = UDim2.new(0, 10, 0, 22)
+    DescLbl.BackgroundTransparency = 1
+    DescLbl.Text = description
+    DescLbl.Font = Enum.Font.Gotham
+    DescLbl.TextColor3 = Color3.fromRGB(150, 150, 150)
+    DescLbl.TextSize = 10
+    DescLbl.TextXAlignment = Enum.TextXAlignment.Left
+    DescLbl.ZIndex = 5
+    DescLbl.Parent = RowFrame
 
-local ActionStroke = Instance.new("UIStroke")
-ActionStroke.Color = Color3.fromRGB(138, 43, 226)
-ActionStroke.Thickness = 1
-ActionStroke.Parent = ActionBtnFrame
+    local ActionBtnFrame = Instance.new("Frame")
+    ActionBtnFrame.Size = UDim2.new(0, 65, 0, 20)
+    ActionBtnFrame.Position = UDim2.new(1, -75, 0.5, -10)
+    ActionBtnFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+    ActionBtnFrame.ZIndex = 5
+    Instance.new("UICorner", ActionBtnFrame).CornerRadius = UDim.new(0, 6)
+    ActionBtnFrame.Parent = RowFrame
 
-local ActionTxt = Instance.new("TextLabel")
-ActionTxt.Size = UDim2.new(1, 0, 1, 0)
-ActionTxt.BackgroundTransparency = 1
-ActionTxt.Text = defaultText
-ActionTxt.Font = Enum.Font.GothamBold
-ActionTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
-ActionTxt.TextSize = 10
-ActionTxt.ZIndex = 6
-ActionTxt.Parent = ActionBtnFrame
+    local ActionStroke = Instance.new("UIStroke")
+    ActionStroke.Color = Color3.fromRGB(138, 43, 226)
+    ActionStroke.Thickness = 1
+    ActionStroke.Parent = ActionBtnFrame
 
-ClickArea.MouseButton1Click:Connect(function()
-TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(138, 43, 226)}):Play()
-task.wait(0.1)
-TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(45, 45, 50)}):Play()
-pcall(function() callback(ActionTxt) end)
-end)
+    local ActionTxt = Instance.new("TextLabel")
+    ActionTxt.Size = UDim2.new(1, 0, 1, 0)
+    ActionTxt.BackgroundTransparency = 1
+    ActionTxt.Text = defaultText
+    ActionTxt.Font = Enum.Font.GothamBold
+    ActionTxt.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ActionTxt.TextSize = 10
+    ActionTxt.ZIndex = 6
+    ActionTxt.Parent = ActionBtnFrame
+
+    ClickArea.MouseButton1Click:Connect(function()
+        if UserTierValue < 0 then Notify("Önce Key giriniz!"); return end
+        if UserTierValue < minTier then Notify("Bu özellik " .. (minTier == 1 and "ADVANCED" or "PRO") .. " gerektirir!"); return end
+
+        TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(138, 43, 226)}):Play()
+        task.wait(0.1)
+        TweenService:Create(ActionBtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Color3.fromRGB(45, 45, 50)}):Play()
+        pcall(function() callback(ActionTxt) end)
+    end)
 end
 -- ==========================================
 -- ÖZELLİKLER VE SEKMELER
@@ -1641,65 +1640,87 @@ Toggles.SheriffESP = state
 UpdateESP()
 end)
 -- === IŞINLANMA (TELEPORT) SEKMESİ ===
+-- === IŞINLANMA (TELEPORT) SEKMESİ ===
 local TeleportCard = CreateCategoryCard(TeleportTab, "Hızlı Işınlanma")
 
-CreateButton(TeleportCard, "Lobiye Işınlan", "Bekleme salonuna (Lobby) geri dönersin.", "GİT", function()
+CreateButton(TeleportCard, "Lobiye Işınlan", "Bekleme salonuna (Lobby) geri dönersin.", 0, "GİT", function()
 if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-109, 138, 11) -- MM2 Lobi kordinatlarına yakın bir nokta
+LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-109, 138, 11)
 Notify("Lobiye ışınlandın.")
 end
 end)
 
-CreateButton(TeleportCard, "Haritaya Işınlan", "Oynanan haritanın ortasına gidersin.", "GİT", function()
+CreateButton(TeleportCard, "Haritaya Işınlan", "Oynanan haritanın ortasına gidersin.", 0, "GİT", function()
 local mapSpawns = Workspace:FindFirstChild("Spawns") or Workspace:FindFirstChild("NormalSpawns")
-if mapSpawns and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-local spawns = mapSpawns:GetChildren()
-if #spawns > 0 then
-LocalPlayer.Character.HumanoidRootPart.CFrame = spawns[1].CFrame + Vector3.new(0, 5, 0)
+if mapSpawns and #mapSpawns:GetChildren() > 0 and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+LocalPlayer.Character.HumanoidRootPart.CFrame = mapSpawns:GetChildren()[1].CFrame + Vector3.new(0, 5, 0)
 Notify("Haritaya ışınlandın.")
-end
 else
 Notify("Oyun şu an başlamamış!")
 end
 end)
 
-CreateButton(TeleportCard, "Katile Işınlan", "Katilin tam arkasına ışınlanırsın.", "GİT", function()
+CreateButton(TeleportCard, "Katile Işınlan", "Katilin tam arkasına ışınlanırsın.", 0, "GİT", function()
 for _, plr in pairs(Players:GetPlayers()) do
 if plr ~= LocalPlayer and GetRole(plr) == "Murderer" and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 LocalPlayer.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 4)
-Notify("Katile ışınlandın!")
-return
+Notify("Katile ışınlandın!") return
 end
 end
 end
 Notify("Katil bulunamadı.")
 end)
 
-CreateButton(TeleportCard, "Şerife Işınlan", "Şerifin tam arkasına ışınlanırsın.", "GİT", function()
+CreateButton(TeleportCard, "Şerife Işınlan", "Şerifin tam arkasına ışınlanırsın.", 0, "GİT", function()
 for _, plr in pairs(Players:GetPlayers()) do
 if plr ~= LocalPlayer and GetRole(plr) == "Sheriff" and plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") then
 if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 LocalPlayer.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 4)
-Notify("Şerife ışınlandın!")
-return
+Notify("Şerife ışınlandın!") return
 end
 end
 end
 Notify("Şerif bulunamadı.")
 end)
 
+-- === AYARLAR SEKMESİ ===
+local SettingsCard = CreateCategoryCard(SettingsTab, "Arayüz Ayarları (GUI)")
+
+local currentSizeState = 3
+CreateButton(SettingsCard, "Arayüz Boyutu", "Menünün boyutunu ayarlar.", 0, "NORMAL", function(btnTxt)
+currentSizeState = currentSizeState + 1
+if currentSizeState > 3 then currentSizeState = 1 end
+local targetSize = UDim2.new(0, 800, 0, 520); local stateName = "NORMAL"
+if currentSizeState == 1 then targetSize = UDim2.new(0, 480, 0, 350); stateName = "KÜÇÜK"
+elseif currentSizeState == 2 then targetSize = UDim2.new(0, 620, 0, 420); stateName = "ORTA" end
+btnTxt.Text = stateName
+TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = targetSize}):Play()
+end)
+
+local colors = {Color3.fromRGB(0, 255, 0), Color3.fromRGB(255, 0, 0), Color3.fromRGB(255, 255, 0), Color3.fromRGB(255, 255, 255)}
+local colorNames = {"YEŞİL", "KIRMIZI", "SARI", "BEYAZ"}
+local cIndex = 1; CrossColor = colors[cIndex]
+
+CreateButton(SettingsCard, "Crosshair Rengi", "Aimbot nişangahının rengini değiştirir.", 0, "YEŞİL", function(btnTxt)
+cIndex = cIndex + 1
+if cIndex > #colors then cIndex = 1 end
+CrossColor = colors[cIndex]
+btnTxt.Text = colorNames[cIndex]
+btnTxt.TextColor3 = colors[cIndex]
+end)
 -- === GROQ AI SEKMESİ (DİNAMİK KODLAMA & SOHBET) ===
 -- === ASİSTAN AI SEKMESİ (YENİ SİSTEM) ===
 local HttpService = game:GetService("HttpService")
-local GroqAPIKey = "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"
-local aiMode = "Chat" -- "Chat" veya "Code" Modu
+local GroqAPIKey = "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"
+local aiMode = "Chat" 
+local aiMessageCount = 0 -- Kullanım kotası
 
--- 1. ÜST KISIM: AI Yanıt ve Düşünme Alanı
 local AITopFrame = Instance.new("Frame")
 AITopFrame.Size = UDim2.new(1, -20, 0.45, 0)
 AITopFrame.Position = UDim2.new(0, 10, 0, 10)
 AITopFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+AITopFrame.ZIndex = 50 
 Instance.new("UICorner", AITopFrame).CornerRadius = UDim.new(0, 8)
 Instance.new("UIStroke", AITopFrame).Color = Color3.fromRGB(138, 43, 226)
 AITopFrame.Parent = AITab
@@ -1715,25 +1736,20 @@ AIResponseText.TextWrapped = true
 AIResponseText.TextXAlignment = Enum.TextXAlignment.Left
 AIResponseText.TextYAlignment = Enum.TextYAlignment.Top
 AIResponseText.TextColor3 = Color3.fromRGB(255, 255, 255)
+AIResponseText.ZIndex = 51
 AIResponseText.Parent = AITopFrame
 
--- AI Renk Animasyonu (Gemini Tarzı Akışkan Gradient)
 local TextGradient = Instance.new("UIGradient")
-TextGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(66, 133, 244)), -- Mavi
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(155, 114, 203)), -- Mor
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(217, 101, 112)) -- Kırmızımsı
-}
-TextGradient.Rotation = 0
+TextGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(66, 133, 244)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(155, 114, 203)), ColorSequenceKeypoint.new(1, Color3.fromRGB(217, 101, 112))}
 TextGradient.Parent = AIResponseText
 TweenService:Create(TextGradient, TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true), {Offset = Vector2.new(1, 0)}):Play()
 
--- Düşünme Animasyonu (3 Nokta)
 local ThinkingFrame = Instance.new("Frame")
 ThinkingFrame.Size = UDim2.new(0, 60, 0, 20)
 ThinkingFrame.Position = UDim2.new(0, 10, 0, 10)
 ThinkingFrame.BackgroundTransparency = 1
 ThinkingFrame.Visible = false
+ThinkingFrame.ZIndex = 51
 ThinkingFrame.Parent = AITopFrame
 
 local dots = {}
@@ -1742,16 +1758,17 @@ for i = 1, 3 do
     dot.Size = UDim2.new(0, 8, 0, 8)
     dot.Position = UDim2.new(0, (i-1)*15, 0.5, -4)
     dot.BackgroundColor3 = Color3.fromRGB(155, 114, 203)
+    dot.ZIndex = 51
     Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
     dot.Parent = ThinkingFrame
     table.insert(dots, dot)
 end
 
--- 2. ORTA KISIM: Mesaj Gönderme Yeri
 local AIMiddleFrame = Instance.new("Frame")
 AIMiddleFrame.Size = UDim2.new(1, -20, 0, 45)
 AIMiddleFrame.Position = UDim2.new(0, 10, 0.45, 20)
 AIMiddleFrame.BackgroundTransparency = 1
+AIMiddleFrame.ZIndex = 50
 AIMiddleFrame.Parent = AITab
 
 local AIInputBox = Instance.new("TextBox")
@@ -1764,6 +1781,7 @@ AIInputBox.Font = Enum.Font.Gotham
 AIInputBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 AIInputBox.TextSize = 12
 AIInputBox.ClearTextOnFocus = false
+AIInputBox.ZIndex = 55
 Instance.new("UICorner", AIInputBox).CornerRadius = UDim.new(0, 6)
 AIInputBox.Parent = AIMiddleFrame
 
@@ -1775,14 +1793,15 @@ AISendBtn.Text = "GÖNDER"
 AISendBtn.Font = Enum.Font.GothamBold
 AISendBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 AISendBtn.TextSize = 12
+AISendBtn.ZIndex = 55
 Instance.new("UICorner", AISendBtn).CornerRadius = UDim.new(0, 6)
 AISendBtn.Parent = AIMiddleFrame
 
--- 3. ALT KISIM: Mod Seçimi
 local AIBottomFrame = Instance.new("Frame")
 AIBottomFrame.Size = UDim2.new(1, -20, 0, 35)
 AIBottomFrame.Position = UDim2.new(0, 10, 0.45, 75)
 AIBottomFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 30)
+AIBottomFrame.ZIndex = 50
 Instance.new("UICorner", AIBottomFrame).CornerRadius = UDim.new(0, 6)
 AIBottomFrame.Parent = AITab
 
@@ -1794,6 +1813,7 @@ ModeToggleBtn.Text = "Sohbet Modu"
 ModeToggleBtn.Font = Enum.Font.GothamBold
 ModeToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 ModeToggleBtn.TextSize = 11
+ModeToggleBtn.ZIndex = 55
 Instance.new("UICorner", ModeToggleBtn).CornerRadius = UDim.new(0, 4)
 ModeToggleBtn.Parent = AIBottomFrame
 
@@ -1806,13 +1826,14 @@ ModeDesc.Font = Enum.Font.Gotham
 ModeDesc.TextColor3 = Color3.fromRGB(180, 180, 180)
 ModeDesc.TextSize = 10
 ModeDesc.TextXAlignment = Enum.TextXAlignment.Left
+ModeDesc.ZIndex = 51
 ModeDesc.Parent = AIBottomFrame
 
 ModeToggleBtn.MouseButton1Click:Connect(function()
     if aiMode == "Chat" then
         aiMode = "Code"
         ModeToggleBtn.Text = (currentLang == "TR") and "Kod Modu" or "Code Mode"
-        ModeDesc.Text = (currentLang == "TR") and "Asistan menüye dinamik özellik ekler." or "Assistant adds dynamic features."
+        ModeDesc.Text = (currentLang == "TR") and "Asistan anında hile komutlarını (ESP vs) çalıştırır." or "Assistant directly executes commands (ESP etc)."
         ModeToggleBtn.BackgroundColor3 = Color3.fromRGB(217, 101, 112)
     else
         aiMode = "Chat"
@@ -1822,17 +1843,15 @@ ModeToggleBtn.MouseButton1Click:Connect(function()
     end
 end)
 
--- Typewriter (Daktilo) Efekti
 local function Typewrite(text)
     AIResponseText.Text = ""
     AIResponseText.Visible = true
     for i = 1, #text do
         AIResponseText.Text = string.sub(text, 1, i)
-        task.wait(0.015) -- Kendi kendine yazma hızı
+        task.wait(0.015) 
     end
 end
 
--- Hareketli Düşünme Noktaları Animasyonu
 local isThinking = false
 local function PlayThinkingAnimation()
     isThinking = true
@@ -1855,26 +1874,17 @@ local function StopThinkingAnimation()
     ThinkingFrame.Visible = false
 end
 
--- Asistanın Beyni (Script Mimarisi Eğitimi)
 local function GetSystemContext()
-    local langRule = (currentLang == "TR") and "Kullanıcıyla mutlaka Türkçe konuş." or "You must speak English."
-    local basePrompt = "Sen DarkerSH adlı Roblox Exploit yazılımının yerleşik yapay zekasısın. Adın 'DarkerSH AI'. Groq veya OpenAI gibi isimleri reddet, sen DarkerSH'in beynisin. " .. langRule .. " "
+    local langIns = (currentLang == "TR") and "Kullanıcının seçtiği dil TÜRKÇE. Tüm cevaplarını ve diyaloglarını kesinlikle Türkçe vereceksin!" or "User language is ENGLISH. You must reply entirely in English!"
+    local basePrompt = "Sen DarkerSH adlı Roblox Exploit'inin entegre Asistanısın. " .. langIns .. " "
 
     if aiMode == "Code" then
-        return basePrompt .. [[Kullanıcı senden menüye bir şey eklemeni isterse SADECE VE SADECE LUA KODU ver. Merhaba, tamam, ekliyorum gibi sohbetler etme. 
-        Menümüzün altyapı fonksiyonları şunlardır:
-        - CreateCategoryCard(parentTab, titleText)
-        - CreateToggle(parentContainer, name, description, minTier, callback)
-        - CreateButton(parentContainer, name, description, defaultText, callback)
-        - Notify(text)
-        Hedef Sekmeler (Parent olarak kullan): Tabs["Ana Menü"].Page, Tabs["Farm"].Page, Tabs["Oyuncu"].Page, Tabs["Savaş"].Page, Tabs["Görsel"].Page, Tabs["Işınlanma"].Page, Tabs["Ayarlar"].Page.
-        Kodu sadece ```lua ve ``` içine al. Başka hiçbir metin döndürme.]]
+        return basePrompt .. [[Kullanıcı senden oyunda doğrudan (ESP aç, uçmamı sağla, zıplat vb.) bir özellik istiyorsa, SADECE roblox'ta anında çalışacak yerel (LocalPlayer) scriptini ver. UI kodları ekleme. Ancak açıkça 'Bunu menüme özellik olarak ekle' derse CreateToggle kullanabilirsin. Kodu SADECE ```lua içine yaz. Başka sohbet etme.]]
     else
-        return basePrompt .. "Şu an Sohbet Modundasın. Menüye bir şey ekleyemezsin, sadece kullanıcının sorularını yanıtla. Çok kısa, samimi ve teknik cevaplar ver. Eğer senden menüye bir özellik eklemeni isterlerse 'Lütfen aşağıdan Kod Moduna geçiş yapın' diye uyar."
+        return basePrompt .. "Sohbet modundasın. Çok kısa, samimi ve asistan gibi konuş. Kod yazma."
     end
 end
 
--- Groq API Bağlantısı ve Karar Mekanizması
 local function RequestDarkerAI(prompt)
     local req = (syn and syn.request) or request or http_request or nil
     if not req then
@@ -1886,54 +1896,52 @@ local function RequestDarkerAI(prompt)
 
     task.spawn(function()
         local response = req({
-            Url = "https://api.groq.com/openai/v1/chat/completions",
+            Url = "[https://api.groq.com/openai/v1/chat/completions](https://api.groq.com/openai/v1/chat/completions)",
             Method = "POST",
-            Headers = {
-                ["Content-Type"] = "application/json",
-                ["Authorization"] = "Bearer " .. GroqAPIKey
-            },
+            Headers = {["Content-Type"] = "application/json", ["Authorization"] = "Bearer " .. GroqAPIKey},
             Body = HttpService:JSONEncode({
-                model = "llama-3.3-70b-versatile", -- YENİ VE GÜÇLÜ MODEL BURADA GÜNCELLENDİ
-                messages = {
-                    {role = "system", content = GetSystemContext()},
-                    {role = "user", content = prompt}
-                }
+                model = "llama-3.3-70b-versatile",
+                messages = {{role = "system", content = GetSystemContext()}, {role = "user", content = prompt}}
             })
         })
 
         StopThinkingAnimation()
-
         if response and response.Success then
             local data = HttpService:JSONDecode(response.Body)
             local aiReply = data.choices[1].message.content
 
-            -- Kod modundaysa ve kod verdiyse gizlice çalıştır
             if aiMode == "Code" and aiReply:find("```lua") then
                 local codeBlock = aiReply:match("```lua\n(.-)```") or aiReply:match("```lua(.-)```")
                 if codeBlock then
                     local func, err = loadstring(codeBlock)
                     if func then
                         task.spawn(func)
-                        Typewrite((currentLang == "TR") and "Yazdığım sistem menüye başarıyla entegre edildi!" or "The system I wrote was successfully integrated!")
+                        Typewrite((currentLang == "TR") and "İstediğiniz komut başarıyla çalıştırıldı!" or "Your command was executed successfully!")
                     else
-                        Typewrite((currentLang == "TR") and "Kod çalıştırılırken bir hata oluştu: " .. tostring(err) or "An error occurred while executing the code: " .. tostring(err))
+                        Typewrite((currentLang == "TR") and "Hata oluştu: " .. tostring(err) or "Execution error: " .. tostring(err))
                     end
                 else
-                    Typewrite((currentLang == "TR") and "Kod bloğunu algılayamadım, lütfen tekrar isteyin." or "I couldn't detect the code block, please ask again.")
+                    Typewrite((currentLang == "TR") and "Kodu çalıştıramadım." or "Failed to extract code.")
                 end
             else
-                -- Sohbet modundaysa veya kod modunda olup sohbet ediyorsa direkt yazdır
                 Typewrite(aiReply)
             end
         else
-            Typewrite("API Bağlantı Hatası: " .. tostring(response.StatusCode))
+            Typewrite("API Hatası: " .. tostring(response.StatusCode))
         end
     end)
 end
 
 AISendBtn.MouseButton1Click:Connect(function()
+    local maxLimit = (UserTierValue == 2) and 20 or ((UserTierValue == 1) and 10 or 3)
+    if aiMessageCount >= maxLimit then
+        Typewrite((currentLang == "TR") and "Günlük AI limitinize ulaştınız ("..maxLimit.." Mesaj). Daha fazlası için Tier yükseltin." or "You reached your AI limit ("..maxLimit.." Messages). Upgrade Tier for more.")
+        return
+    end
+
     local txt = AIInputBox.Text
     if txt ~= "" then
+        aiMessageCount = aiMessageCount + 1
         AIInputBox.Text = ""
         RequestDarkerAI(txt)
     end
@@ -1963,39 +1971,68 @@ TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.E
 end)
 -- 2. DİL DEĞİŞTİRME (LANGUAGE)
 local currentLang = "EN"
+
+local trToEn = {
+    ["Akıllı Altın Topla"] = "Smart Coin Farm", ["Biraz üstünden uçar, buga girmez ve anında geçer."] = "Flies above, prevents bugs, instant collect.",
+    ["Akıllı Silah Topla"] = "Smart Gun Farm", ["Silaha ışınlanıp eski yerine döner."] = "Teleports to gun and returns.",
+    ["Otomatik Katlet"] = "Auto Kill All", ["Herkesi önüne çeker ve katleder."] = "Pulls everyone and kills them.",
+    ["Katili Vur (Aimbot)"] = "Shoot Murderer (Aimbot)", ["Mobil uyumlu, katile pürüzsüz kilitlenir."] = "Mobile friendly, smoothly locks to murderer.",
+    ["Hitbox Expander"] = "Hitbox Expander", ["Katilin ve Şerifin kafasını devasa yapar."] = "Makes Murderer and Sheriff heads massive.",
+    ["Hızlı Yürüme"] = "Fast Walk", ["Yürüme hızını ayarlar ve yanda menü açar."] = "Adjusts walk speed and opens side menu.",
+    ["Noclip"] = "Noclip", ["Duvarların içinden geçersin."] = "Walk through walls.",
+    ["Pürüzsüz Uçuş (Fly)"] = "Smooth Fly", ["Premium animasyon destekli Fly."] = "Premium animation supported Fly.",
+    ["Güvenli Mod"] = "Safe Mode", ["Katilden ve fırlatılan bıçaktan kaçar."] = "Escapes murderer and thrown knife.",
+    ["Hayalet Görünmezlik"] = "Ghost Invisibility", ["Gerçek bedeni 1000 stud yukarı gizler."] = "Hides real body 1000 studs above.",
+    ["Tüm Oyuncular (Player ESP)"] = "All Players (ESP)", ["İsim, Mesafe ve Rol Gösterir."] = "Shows Name, Distance, and Role.",
+    ["Sadece Katil (Murderer ESP)"] = "Murderer ESP Only", ["Katili ve uzaklığını gösterir."] = "Shows murderer and distance.",
+    ["Sadece Şerif (Sheriff ESP)"] = "Sheriff ESP Only", ["Şerifi ve uzaklığını gösterir."] = "Shows sheriff and distance.",
+    ["Lobiye Işınlan"] = "Teleport to Lobby", ["Bekleme salonuna (Lobby) geri dönersin."] = "Returns you to the waiting lobby.",
+    ["Haritaya Işınlan"] = "Teleport to Map", ["Oynanan haritanın ortasına gidersin."] = "Goes to the middle of the current map.",
+    ["Katile Işınlan"] = "Teleport to Murderer", ["Katilin tam arkasına ışınlanırsın."] = "Teleports right behind the murderer.",
+    ["Şerife Işınlan"] = "Teleport to Sheriff", ["Şerifin tam arkasına ışınlanırsın."] = "Teleports right behind the sheriff.",
+    ["Arayüz Boyutu"] = "UI Size", ["Menünün boyutunu ayarlar."] = "Adjusts the size of the menu.",
+    ["Crosshair Rengi"] = "Crosshair Color", ["Aimbot nişangahının rengini değiştirir."] = "Changes aimbot crosshair color."
+}
+
+local enToTr = {}
+for k, v in pairs(trToEn) do enToTr[v] = k end
+
+local function TranslateGUI(isTR)
+    local targetDict = isTR and enToTr or trToEn
+    for _, obj in pairs(ContentContainer:GetDescendants()) do
+        if obj:IsA("TextLabel") and (obj.Name == "TitleLbl" or obj.Name == "DescLbl") then
+            if targetDict[obj.Text] then obj.Text = targetDict[obj.Text] end
+        end
+    end
+end
+
 local function UpdateLanguage()
     if currentLang == "TR" then
         WelcomeTitle.Text = "MM2'yi Bu Yazılımımız İle Domine Et."
         Tabs["Ana Menü"].Button.Text = "Ana Menü"
-        Tabs["Farm"].Button.Text = "Farm"
-        Tabs["Oyuncu"].Button.Text = "Oyuncu"
-        Tabs["Savaş"].Button.Text = "Savaş"
-        Tabs["Görsel"].Button.Text = "Görsel"
-        Tabs["Işınlanma"].Button.Text = "Işınlanma"
-        Tabs["Groq AI"].Button.Text = "Asistan AI"
+        Tabs["Farm"].Button.Text = "Farm"; Tabs["Oyuncu"].Button.Text = "Oyuncu"
+        Tabs["Savaş"].Button.Text = "Savaş"; Tabs["Görsel"].Button.Text = "Görsel"
+        Tabs["Işınlanma"].Button.Text = "Işınlanma"; Tabs["Groq AI"].Button.Text = "Asistan AI"
         Tabs["Ayarlar"].Button.Text = "Ayarlar"
         
-        -- AI Dil Ayarları
         if AIInputBox then AIInputBox.PlaceholderText = "Asistana komutunuzu yazın..." end
         if AISendBtn then AISendBtn.Text = "GÖNDER" end
         if ModeToggleBtn then ModeToggleBtn.Text = (aiMode == "Chat") and "Sohbet Modu" or "Kod Modu" end
-        if ModeDesc then ModeDesc.Text = (aiMode == "Chat") and "Asistan sizinle sadece sohbet eder." or "Asistan menüye dinamik özellik ekler." end
+        if ModeDesc then ModeDesc.Text = (aiMode == "Chat") and "Asistan sizinle sadece sohbet eder." or "Asistan anında hile komutlarını çalıştırır." end
+        TranslateGUI(true)
     else
         WelcomeTitle.Text = "Dominate MM2 With Our Soft-Ware"
         Tabs["Ana Menü"].Button.Text = "Home"
-        Tabs["Farm"].Button.Text = "Farm"
-        Tabs["Oyuncu"].Button.Text = "Player"
-        Tabs["Savaş"].Button.Text = "Combat"
-        Tabs["Görsel"].Button.Text = "Visual"
-        Tabs["Işınlanma"].Button.Text = "Teleport"
-        Tabs["Groq AI"].Button.Text = "Assistant AI"
+        Tabs["Farm"].Button.Text = "Farm"; Tabs["Oyuncu"].Button.Text = "Player"
+        Tabs["Savaş"].Button.Text = "Combat"; Tabs["Görsel"].Button.Text = "Visual"
+        Tabs["Işınlanma"].Button.Text = "Teleport"; Tabs["Groq AI"].Button.Text = "Assistant AI"
         Tabs["Ayarlar"].Button.Text = "Settings"
         
-        -- AI Dil Ayarları
         if AIInputBox then AIInputBox.PlaceholderText = "Type your command to the assistant..." end
         if AISendBtn then AISendBtn.Text = "SEND" end
         if ModeToggleBtn then ModeToggleBtn.Text = (aiMode == "Chat") and "Chat Mode" or "Code Mode" end
-        if ModeDesc then ModeDesc.Text = (aiMode == "Chat") and "Assistant only chats with you." or "Assistant adds dynamic features to menu." end
+        if ModeDesc then ModeDesc.Text = (aiMode == "Chat") and "Assistant only chats with you." or "Assistant directly executes commands." end
+        TranslateGUI(false)
     end
 end
 UpdateLanguage()
