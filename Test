@@ -1895,43 +1895,60 @@ local function RequestDarkerAI(prompt)
     PlayThinkingAnimation()
 
     task.spawn(function()
-        local response = req({
-            Url = "[https://api.groq.com/openai/v1/chat/completions](https://api.groq.com/openai/v1/chat/completions)",
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json", ["Authorization"] = "Bearer " .. GroqAPIKey},
-            Body = HttpService:JSONEncode({
-                model = "llama-3.3-70b-versatile",
-                messages = {{role = "system", content = GetSystemContext()}, {role = "user", content = prompt}}
+        -- İstek atarken çökme olursa sistemi kitlememesi için pcall (hata yakalayıcı) ekledik.
+        local success, response = pcall(function()
+            return req({
+                Url = "https://api.groq.com/openai/v1/chat/completions", -- BOZUK LİNK BURADA DÜZELTİLDİ
+                Method = "POST",
+                Headers = {
+                    ["Content-Type"] = "application/json", 
+                    ["Authorization"] = "Bearer " .. GroqAPIKey
+                },
+                Body = HttpService:JSONEncode({
+                    model = "llama-3.3-70b-versatile",
+                    messages = {
+                        {role = "system", content = GetSystemContext()}, 
+                        {role = "user", content = prompt}
+                    }
+                })
             })
-        })
+        end)
 
         StopThinkingAnimation()
-        if response and response.Success then
-            local data = HttpService:JSONDecode(response.Body)
-            local aiReply = data.choices[1].message.content
 
-            if aiMode == "Code" and aiReply:find("```lua") then
-                local codeBlock = aiReply:match("```lua\n(.-)```") or aiReply:match("```lua(.-)```")
-                if codeBlock then
-                    local func, err = loadstring(codeBlock)
-                    if func then
-                        task.spawn(func)
-                        Typewrite((currentLang == "TR") and "İstediğiniz komut başarıyla çalıştırıldı!" or "Your command was executed successfully!")
+        if success and response and response.Success then
+            local data = HttpService:JSONDecode(response.Body)
+            
+            -- API'den gelen verinin boş olup olmadığını kontrol et
+            if data and data.choices and data.choices[1] then
+                local aiReply = data.choices[1].message.content
+
+                if aiMode == "Code" and aiReply:find("```lua") then
+                    local codeBlock = aiReply:match("```lua\n(.-)```") or aiReply:match("```lua(.-)```")
+                    if codeBlock then
+                        local func, err = loadstring(codeBlock)
+                        if func then
+                            task.spawn(func)
+                            Typewrite((currentLang == "TR") and "İstediğiniz komut başarıyla çalıştırıldı!" or "Your command was executed successfully!")
+                        else
+                            Typewrite((currentLang == "TR") and "Hata oluştu: " .. tostring(err) or "Execution error: " .. tostring(err))
+                        end
                     else
-                        Typewrite((currentLang == "TR") and "Hata oluştu: " .. tostring(err) or "Execution error: " .. tostring(err))
+                        Typewrite((currentLang == "TR") and "Kodu çalıştıramadım." or "Failed to extract code.")
                     end
                 else
-                    Typewrite((currentLang == "TR") and "Kodu çalıştıramadım." or "Failed to extract code.")
+                    Typewrite(aiReply)
                 end
             else
-                Typewrite(aiReply)
+                Typewrite((currentLang == "TR") and "AI'dan eksik veri geldi." or "Received incomplete data from AI.")
             end
         else
-            Typewrite("API Hatası: " .. tostring(response.StatusCode))
+            -- API hatası veya geçersiz istek olursa bunu ekrana yazdıracak
+            local errDetail = response and (type(response) == "table" and tostring(response.StatusCode) or tostring(response)) or "Bilinmeyen Hata"
+            Typewrite("API Bağlantı Hatası: " .. errDetail)
         end
     end)
 end
-
 AISendBtn.MouseButton1Click:Connect(function()
     local maxLimit = (UserTierValue == 2) and 20 or ((UserTierValue == 1) and 10 or 3)
     if aiMessageCount >= maxLimit then
