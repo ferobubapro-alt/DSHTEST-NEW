@@ -303,9 +303,25 @@ Instance.new("UICorner", FloatingIcon).CornerRadius = UDim.new(1, 0)
 FloatingIcon.Parent = ScreenGui
 
 local FIStroke = Instance.new("UIStroke")
-FIStroke.Color = Color3.fromRGB(138, 43, 226)
+FIStroke.Color = Color3.fromRGB(255, 255, 255) -- UIGradient'in renklerini net vermesi için baz renk beyaz olmalı
 FIStroke.Thickness = 2.5
 FIStroke.Parent = FloatingIcon
+
+-- Siyah ve Koyu Mor geçişi
+local FIGradient = Instance.new("UIGradient")
+FIGradient.Color = ColorSequence.new{
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)), -- Siyah
+    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(70, 0, 130)), -- Koyu Mor
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0)) -- Siyah
+}
+FIGradient.Parent = FIStroke
+
+-- Çerçevenin etrafında birbirini kovalama (Dönme) animasyonu
+RunService.RenderStepped:Connect(function(dt)
+    if FloatingIcon.Visible then
+        FIGradient.Rotation = (FIGradient.Rotation + (dt * 120)) % 360
+    end
+end)
 
 MakeDraggable(FloatingIcon)
 
